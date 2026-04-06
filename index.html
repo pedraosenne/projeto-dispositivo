@@ -1,45 +1,216 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Sanguíneo QR</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Emergência Segura - QR Code Médico</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background: #e63939;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #e63939;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #c11212;
+        }
+
+        .qr-container {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+        }
+
+        .info {
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-
     <div class="container">
-        <h2>Meu Perfil de Emergência</h2>
 
-        <div id="form-section">
-            <input type="text" id="nome" placeholder="Seu Nome Completo">
-            <select id="tipoSanguineo">
-                <option value="">Selecione seu tipo sanguíneo</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-            </select>
-            <button onclick="gerarPerfil()">Gerar QR Code</button>
+        <!-- TELA DE LOGIN -->
+        <div id="loginScreen">
+            <header>
+                <h1>Emergência Segura</h1>
+                <p>QR Code Médico</p>
+            </header>
+            <div class="content">
+                <h2 style="text-align:center;">Faça seu login</h2>
+                <input type="email" id="email" placeholder="Seu email" value="teste@email.com">
+                <input type="password" id="senha" placeholder="Senha" value="123456">
+                <button onclick="fazerLogin()">Entrar</button>
+                <p style="text-align:center; margin-top:15px; font-size:14px;">(Use qualquer email e senha para testar)
+                </p>
+            </div>
         </div>
 
-        <div id="qr-section" style="display:none;">
-            <h3>Seu QR Code:</h3>
-            <div id="qrcode"></div>
-            <p><strong>Nome:</strong> <span id="display-nome"></span></p>
-            <p><strong>Tipo:</strong> <span id="display-tipo"></span></p>
-            <button onclick="voltar()">Editar Dados</button>
+        <!-- TELA DE FORMULÁRIO -->
+        <div id="formScreen" class="hidden">
+            <header>
+                <h1>Seus Dados</h1>
+            </header>
+            <div class="content">
+                <label>Nome completo *</label>
+                <input type="text" id="nome" placeholder="Ex: João Silva">
+
+                <label>Data de nascimento *</label>
+                <input type="date" id="nascimento">
+
+                <label>Tipo sanguíneo *</label>
+                <select id="sangue">
+                    <option value="">Selecione</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+
+                <button onclick="gerarQRCode()">Gerar meu QR Code</button>
+            </div>
         </div>
+
+        <!-- TELA DO QR CODE -->
+        <div id="qrScreen" class="hidden">
+            <header>
+                <h1>Seu QR Code Médico</h1>
+            </header>
+            <div class="content">
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                    <p id="qrInfo" class="info"></p>
+                </div>
+                <button onclick="baixarQRCode()">Baixar QR Code (PNG)</button>
+                <button onclick="voltarFormulario()" style="background:#666; margin-top:10px;">Editar dados</button>
+            </div>
+        </div>
+
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        let qrCodeInstance = null;
+
+        function fazerLogin() {
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("formScreen").classList.remove("hidden");
+        }
+
+        function gerarQRCode() {
+            const nome = document.getElementById("nome").value.trim();
+            const nascimento = document.getElementById("nascimento").value;
+            const sangue = document.getElementById("sangue").value;
+
+            if (!nome || !nascimento || !sangue) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            // Formata os dados para o QR Code
+            const textoQR = `Nome: ${nome}\nData de Nascimento: ${nascimento}\nTipo Sanguíneo: ${sangue}`;
+
+            // Mostra a tela do QR
+            document.getElementById("formScreen").classList.add("hidden");
+            document.getElementById("qrScreen").classList.remove("hidden");
+
+            // Limpa QR anterior
+            const qrDiv = document.getElementById("qrcode");
+            qrDiv.innerHTML = "";
+
+            // Gera o novo QR Code
+            qrCodeInstance = new QRCode(qrDiv, {
+                text: textoQR,
+                width: 280,
+                height: 280,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Mostra as informações abaixo do QR
+            document.getElementById("qrInfo").innerHTML = `
+        <strong>Nome:</strong> ${nome}<br>
+        <strong>Data de Nascimento:</strong> ${nascimento}<br>
+        <strong>Tipo Sanguíneo:</strong> ${sangue}
+      `;
+        }
+
+        function baixarQRCode() {
+            if (!qrCodeInstance) return;
+            const canvas = document.querySelector("#qrcode canvas");
+            if (canvas) {
+                const link = document.createElement("a");
+                link.download = "meu-qr-code-medico.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
+        }
+
+        function voltarFormulario() {
+            document.getElementById("qrScreen").classList.add("hidden");
+            document.getElementById("formScreen").classList.remove("hidden");
+        }
+    </script>
 </body>
 
 </html>
