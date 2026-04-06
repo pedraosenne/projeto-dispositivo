@@ -9,6 +9,7 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #f4f4f4;
   color: #333;
+  line-height: 1.5;
 }
 
 .container {
@@ -48,18 +49,23 @@ label {
   color: #444;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   padding: 14px;
   border: 1.5px solid #ddd;
   border-radius: 10px;
   font-size: 16px;
   margin-bottom: 10px;
+  resize: vertical;
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
   border-color: #e63939;
   outline: none;
+}
+
+textarea {
+  min-height: 80px;
 }
 
 button {
@@ -88,6 +94,12 @@ button:hover {
   background: #555 !important;
 }
 
+.btn-primary {
+  background: #e63939;
+  font-size: 18px;
+  padding: 18px;
+}
+
 .info-login {
   text-align: center;
   margin-top: 15px;
@@ -95,7 +107,7 @@ button:hover {
   color: #666;
 }
 
-/* QR Code Screen */
+/* QR Code */
 .qr-container {
   text-align: center;
   padding: 30px 20px;
@@ -117,10 +129,10 @@ button:hover {
   margin-top: 20px;
   text-align: left;
   background: white;
-  padding: 15px;
+  padding: 18px;
   border-radius: 8px;
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.7;
   border: 1px solid #eee;
 }
 

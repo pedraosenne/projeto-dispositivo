@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emergência Segura - QR Code Médico</title>
   <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="app.js">
-
-  
+  <link rel="stylesheet" href="app.js">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <div class="container">
 
-    <!-- TELA DE LOGIN -->
-    <div id="loginScreen">
+    <!-- TELA INICIAL -->
+    <div id="homeScreen">
       <header>
         <h1>Emergência Segura</h1>
-        <p>QR Code Médico</p>
+        <p>Suas informações médicas em segundos</p>
       </header>
       <div class="content">
-        <h2>Faça seu login</h2>
-        <input type="email" id="email" placeholder="Seu email" value="teste@email.com">
-        <input type="password" id="senha" placeholder="Senha" value="123456">
-        <button onclick="fazerLogin()">Entrar</button>
-        <p class="info-login">(Use qualquer email e senha para testar)</p>
+        <button onclick="irParaFormulario()" class="btn-primary">Criar meu QR Code</button>
+        <button onclick="pularLogin()" class="btn-secondary">Continuar sem login</button>
       </div>
     </div>
 
     <!-- TELA DE FORMULÁRIO -->
     <div id="formScreen" class="hidden">
       <header>
-        <h1>Seus Dados</h1>
+        <h1>Informações Pessoais</h1>
       </header>
       <div class="content">
         <label>Nome completo *</label>
@@ -40,6 +34,15 @@
 
         <label>Data de nascimento *</label>
         <input type="date" id="nascimento">
+
+        <label>RG</label>
+        <input type="text" id="rg" placeholder="Ex: 12.345.678-9">
+
+        <label>Telefone de contato *</label>
+        <input type="tel" id="telefone" placeholder="Ex: (44) 99999-0000">
+
+        <label>Endereço</label>
+        <input type="text" id="endereco" placeholder="Ex: Rua das Flores, 123 - Manoel Ribas, PR">
 
         <label>Tipo sanguíneo *</label>
         <select id="sangue">
@@ -54,7 +57,14 @@
           <option value="O-">O-</option>
         </select>
 
+        <label>Alergias</label>
+        <textarea id="alergias" rows="3" placeholder="Ex: Penicilina, Dipirona, Látex..."></textarea>
+
+        <label>Medicamentos de uso contínuo</label>
+        <textarea id="medicamentos" rows="3" placeholder="Ex: Losartana 50mg, Metformina 500mg..."></textarea>
+
         <button onclick="gerarQRCode()">Gerar meu QR Code</button>
+        <button onclick="voltarHome()" class="btn-secondary">Voltar</button>
       </div>
     </div>
 
