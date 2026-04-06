@@ -1,0 +1,135 @@
+/* index.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  background: white;
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+header {
+  background: #e63939;
+  color: white;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+header p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.content {
+  padding: 25px 20px;
+}
+
+label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: 600;
+  color: #444;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+input:focus, select:focus {
+  border-color: #e63939;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  background: #e63939;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #c11212;
+}
+
+.btn-secondary {
+  background: #666 !important;
+}
+
+.btn-secondary:hover {
+  background: #555 !important;
+}
+
+.info-login {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* QR Code Screen */
+.qr-container {
+  text-align: center;
+  padding: 30px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+}
+
+#qrcode {
+  margin: 15px auto;
+  padding: 15px;
+  background: white;
+  display: inline-block;
+  border-radius: 8px;
+}
+
+.qr-info {
+  margin-top: 20px;
+  text-align: left;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 15.5px;
+  line-height: 1.6;
+  border: 1px solid #eee;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .container {
+    box-shadow: none;
+  }
+}
